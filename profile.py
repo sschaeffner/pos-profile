@@ -37,6 +37,7 @@ pc.verifyParameters()
 
 # Add a raw PC to the request.
 poscontroller = request.RawPC("poscontroller")
+poscontroller.disk_image = "urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU20-64-STD"
 
 if params.phystype != "":
 	poscontroller.hardware_type = params.phystype
