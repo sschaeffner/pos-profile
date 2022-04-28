@@ -23,8 +23,23 @@ pc = portal.Context()
 # Create a Request object to start building the RSpec.
 request = pc.makeRequestRSpec()
 
+# Optional physical type for all nodes.
+pc.defineParameter("phystype",  "Optional physical node type",
+                   portal.ParameterType.STRING, "",
+                   longDescription="Specify a physical node type (m400,m510,etc) " +
+                   "instead of letting the resource mapper choose for you.")
+
+# Retrieve the values the user specifies during instantiation.
+params = pc.bindParameters()
+
+# Check parameter validity.
+pc.verifyParameters()
+
 # Add a raw PC to the request.
 poscontroller = request.RawPC("poscontroller")
+
+if params.phystype != "":
+	poscontroller.hardware_type = params.phystype
 
 # Automatically run installer script on startup.
 # The script will only install pos IF the necessary credentials
