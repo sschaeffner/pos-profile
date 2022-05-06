@@ -56,7 +56,6 @@ ansible-galaxy collection install community.crypto
 # copy credentials
 cp $CREDENTIAL_DIR/cloudlab.pem $ANSIBLE_DIR/roles/pos/files/cloudlab.pem
 cp $CREDENTIAL_DIR/cloudlab.pem $ANSIBLE_DIR/roles/pos/files/cloudlab.key
-cp $CREDENTIAL_DIR/cloudlab.pwd $ANSIBLE_DIR/roles/pos/files/cloudlab.pwd
 
 # TODO maybe create this config via ansible, not sed
 
@@ -71,6 +70,10 @@ sed -i "/ip: /c\ip: $CONTROLLER_IF_IP" $ANSIBLE_DIR/host_vars/poscontroller.geni
 USERNAME="$(whoami)"
 sed -i "s/^\( *\)username: .*/\1username: $USERNAME/" $ANSIBLE_DIR/host_vars/poscontroller.geni.yml
 sed -i "s/^\([ -]*\)name: student/\1name: $USERNAME/" $ANSIBLE_DIR/host_vars/poscontroller.geni.yml
+
+# pos config: fix password
+PASSWORD="$(cat $CREDENTIAL_DIR/cloudlab.pwd)"
+sed -i "s/^\( *\)password: .*/\1password: $PASSWORD/" $ANSIBLE_DIR/host_vars/poscontroller.geni.yml
 
 # pos config: fix project name
 PROJECT_NAME="$(geni-get portalmanifest | grep -oP '(?<=project=")\w+(?=")')"
