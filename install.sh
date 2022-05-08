@@ -3,6 +3,7 @@
 REPO_DIR=/local/repository
 PROJECT_DIR="$(ls -d /proj/*)"
 CREDENTIAL_DIR="$PROJECT_DIR/$(whoami)/cl"
+BOSS="boss.utah.cloudlab.us"
 
 mkdir -p $CREDENTIAL_DIR
 chmod 700 $CREDENTIAL_DIR
@@ -60,7 +61,7 @@ cp $CREDENTIAL_DIR/cloudlab.pem $ANSIBLE_DIR/roles/pos/files/cloudlab.key
 # TODO maybe create this config via ansible, not sed
 
 # pos config: fix ip
-a="$(geni-get control_mac)"
+a="$(geni-get -s $BOSS control_mac)"
 CONTROLLER_IF_MAC=${a:0:2}:${a:2:2}:${a:4:2}:${a:6:2}:${a:8:2}:${a:10:2}
 CONTROLLER_IF_NAME="$(ip -br link | grep $CONTROLLER_IF_MAC | awk '{print $1}')"
 CONTROLLER_IF_IP="$(ip -f inet addr show $CONTROLLER_IF_NAME | awk '/inet / {print $2}')"
@@ -76,7 +77,8 @@ PASSWORD="$(cat $CREDENTIAL_DIR/cloudlab.pwd)"
 sed -i "s/^\( *\)password: .*/\1password: $PASSWORD/" $ANSIBLE_DIR/host_vars/poscontroller.geni.yml
 
 # pos config: fix project name
-PROJECT_NAME="$(geni-get portalmanifest | grep -oP '(?<=project=")\w+(?=")')"
+PORTALMANIFEST="$(geni-get -s $BOSS portalmanifest)"
+PROJECT_NAME="$(echo $PORTALMANIFEST | grep -oP '(?<=project=")\w+(?=")')"
 sed -i "s/^\( *\)project_name: .*/\1project_name: $PROJECT_NAME/" $ANSIBLE_DIR/host_vars/poscontroller.geni.yml
 
 # delete own deploy keys
