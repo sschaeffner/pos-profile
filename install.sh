@@ -65,7 +65,7 @@ a="$(geni-get -s $BOSS control_mac)"
 CONTROLLER_IF_MAC=${a:0:2}:${a:2:2}:${a:4:2}:${a:6:2}:${a:8:2}:${a:10:2}
 CONTROLLER_IF_NAME="$(ip -br link | grep $CONTROLLER_IF_MAC | awk '{print $1}')"
 CONTROLLER_IF_IP="$(ip -f inet addr show $CONTROLLER_IF_NAME | awk '/inet / {print $2}')"
-sed -i "/ip: /c\ip: $CONTROLLER_IF_IP" $ANSIBLE_DIR/host_vars/poscontroller.geni.yml
+sed -i "/internal_ip4: /c\internal_ip4: $CONTROLLER_IF_IP" $ANSIBLE_DIR/host_vars/poscontroller.geni.yml
 
 # pos config: fix username
 USERNAME="$(whoami)"
