@@ -48,11 +48,11 @@ cd $ANSIBLE_DIR
 git checkout $ANSIBLE_COMMIT
 
 # install dependencies
-pip3 install -r ./requirements.txt
-pip3 install "Jinja2<3.1"
+sudo --set-home pip3 install -r ./requirements.txt
+sudo --set-home pip3 install "Jinja2<3.1"
 
 # install ansible modules
-ansible-galaxy collection install community.crypto
+sudo --set-home ansible-galaxy collection install community.crypto
 
 # copy credentials
 cp $CREDENTIAL_DIR/cloudlab.pem $ANSIBLE_DIR/roles/pos/files/cloudlab.pem
@@ -89,8 +89,8 @@ rm -f $REPO_DIR/cloudlab*
 
 # run ansible
 # workaround to create pos user first (ssh role assumes it to exist)
-ansible-playbook -i testbeds/geni/inventory-poscontroller.ini site.yml --tags users,posuser
-ansible-playbook -i testbeds/geni/inventory-poscontroller.ini site.yml
+sudo --set-home ansible-playbook -i testbeds/geni/inventory-poscontroller.ini site.yml --tags users,posuser
+sudo --set-home ansible-playbook -i testbeds/geni/inventory-poscontroller.ini site.yml
 
 # delete credentials
 rm -f $ANSIBLE_DIR/roles/pos/files/cloudlab*
