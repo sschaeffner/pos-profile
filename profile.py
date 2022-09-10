@@ -5,10 +5,10 @@ It makes use of a single raw PC running Ubuntu 20.04. It should be able to be in
 Instructions:
 Wait for the profile instance to start, then click on the node in the topology and choose the `shell` menu item.
 If this is your first time using this profile, download your CloudLab credentials from the user menu in the top
-right and upload them to `/local/repository/cloudlab.pem` on the node.
-Also create a file `/local/repository/cloudlab.pwd` containing your CloudLab password on the node.
-Now, execute `/local/repository/install.sh`.
-The credentials will be copied to `/proj/$PROJECT/$USER/cl/` such that you do not have to upload them again next time.
+right and upload them to `/proj/$PROJECT/$USER/cl/cloudlab.pem` on the node.
+Also create a file `/proj/$PROJECT/$USER/cloudlab.pwd` containing your CloudLab password on the node.
+An SSH key for LRZ GitLab may be required at `/proj/$PROJECT/$USER/cl/id_ed25519`.
+Now, execute `/local/repository/install.sh` (or terminate the experiment and restart it).
 For more information on pos, check [the documentation](https://i8-testbeds.pages.gitlab.lrz.de/pos/cli/).
 """
 
